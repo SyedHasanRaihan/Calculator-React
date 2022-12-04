@@ -1,186 +1,131 @@
-import { useReducer } from "react";
-import DigitButton from "./DigitButton";
-import OperationButton from "./OperationButton";
-import "./styles.css";
+import React, { useState } from "react";
+import "./App.css";
+const App = () => {
+    const [result, setResult] = useState("");
 
-export const ACTIONS = {
-    ADD_DIGIT: "add-digit",
-    CHOOSE_OPERATION: "choose-operation",
-    // CLEAR: "clear",
-    // DELETE_DIGIT: "delete-digit",
-    EVALUATE: "evaluate",
-};
+    const handleClick = (e) => {
+        setResult(result.concat(e.target.name));
+    };
 
-function reducer(state, { type, payload }) {
-    switch (type) {
-        case ACTIONS.ADD_DIGIT:
-            if (state.overwrite) {
-                return {
-                    ...state,
-                    currentOperand: payload.digit,
-                    overwrite: false,
-                };
-            }
-            if (payload.digit === "0" && state.currentOperand === "0") {
-                return state;
-            }
-            if (payload.digit === "." && state.currentOperand.includes(".")) {
-                return state;
-            }
+    const clear = () => {
+        setResult("");
+    };
 
-            return {
-                ...state,
-                currentOperand: `${state.currentOperand || ""}${payload.digit}`,
-            };
-        case ACTIONS.CHOOSE_OPERATION:
-            if (state.currentOperand == null && state.previousOperand == null) {
-                return state;
-            }
+    const toggleSign = () => {
+        setResult(result * -1);
+    };
+    const percentage = () => {
+        setResult(result / 100);
+    };
 
-            if (state.currentOperand == null) {
-                return {
-                    ...state,
-                    operation: payload.operation,
-                };
-            }
-
-            if (state.previousOperand == null) {
-                return {
-                    ...state,
-                    operation: payload.operation,
-                    previousOperand: state.currentOperand,
-                    currentOperand: null,
-                };
-            }
-
-            return {
-                ...state,
-                previousOperand: evaluate(state),
-                operation: payload.operation,
-                currentOperand: null,
-            };
-        case ACTIONS.CLEAR:
-          return {}
-        // case ACTIONS.DELETE_DIGIT:
-        //   if (state.overwrite) {
-        //     return {
-        //       ...state,
-        //       overwrite: false,
-        //       currentOperand: null,
-        //     }
-        //   }
-        //   if (state.currentOperand == null) return state
-        //   if (state.currentOperand.length === 1) {
-        //     return { ...state, currentOperand: null }
-        //   }
-
-        //   return {
-        //     ...state,
-        //     currentOperand: state.currentOperand.slice(0, -1),
-        //   }
-        case ACTIONS.EVALUATE:
-            if (
-                state.operation == null ||
-                state.currentOperand == null ||
-                state.previousOperand == null
-            ) {
-                return state;
-            }
-
-            return {
-                ...state,
-                overwrite: true,
-                previousOperand: null,
-                operation: null,
-                currentOperand: evaluate(state),
-            };
-    }
-}
-
-function evaluate({ currentOperand, previousOperand, operation }) {
-    const prev = parseFloat(previousOperand);
-    const current = parseFloat(currentOperand);
-    if (isNaN(prev) || isNaN(current)) return "";
-    let computation = "";
-    switch (operation) {
-        case "+":
-            computation = prev + current;
-            break;
-        case "-":
-            computation = prev - current;
-            break;
-        case "*":
-            computation = prev * current;
-            break;
-        case "÷":
-            computation = prev / current;
-            break;
-        case "%":
-            computation = prev / 100;
-            break;
-    }
-
-    return computation.toString();
-}
-
-const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", {
-    maximumFractionDigits: 0,
-});
-function formatOperand(operand) {
-    if (operand == null) return;
-    const [integer, decimal] = operand.split(".");
-    if (decimal == null) return INTEGER_FORMATTER.format(integer);
-    return `${INTEGER_FORMATTER.format(integer)}.${decimal}`;
-}
-
-function App() {
-    const [{ currentOperand, previousOperand, operation }, dispatch] =
-        useReducer(reducer, {});
+    const calculate = () => {
+        try {
+            setResult(eval(result).toString());
+        } catch (error) {
+            setResult("ERROR");
+            clear();
+        }
+    };
 
     return (
-        <div className="calculator-grid">
-            <div className="output">
-                <div className="previous-operand">
-                    {formatOperand(previousOperand)} {operation}
-                </div>
-                <div className="current-operand">
-                    {formatOperand(currentOperand)}
+        <>
+            <div className="flex flex-col justify-center items-center h-screen text-base md:text-xl lg:text-3xl">
+                <input className="w-full md:w-[600px] lg:w-[800px] p-2 break-words bg-slate-300 text-right" type="text" value={result} />
+
+                <div className=" grid grid-cols-4 w-full md:w-[600px] lg:w-[800px]">
+                    <button className="col-span-1 bg-slate-100 p-2 border" onClick={clear} id="clear">
+                        AC
+                    </button>
+                    <button
+                        className="col-span-1 bg-slate-100 p-2 border"
+                        onClick={toggleSign}
+                        id="toggleSign"
+                    >
+                        +/-
+                    </button>
+                    <button
+                        className="col-span-1 bg-slate-100 p-2 border"
+                        onClick={percentage}
+                        id="percentage"
+                    >
+                        %
+                    </button>
+                    <button
+                        className="col-span-1 bg-orange-500 p-2 border"
+                        name="/"
+                        onClick={handleClick}
+                    >
+                        &divide;
+                    </button>
+                    <button className="col-span-1 bg-slate-100 p-2 border" name="7" onClick={handleClick}>
+                        7
+                    </button>
+                    <button className="col-span-1 bg-slate-100 p-2 border" name="8" onClick={handleClick}>
+                        8
+                    </button>
+                    <button className="col-span-1 bg-slate-100 p-2 border" name="9" onClick={handleClick}>
+                        9
+                    </button>
+                    <button
+                        className="col-span-1 bg-orange-500 p-2 border"
+                        name="*"
+                        onClick={handleClick}
+                    >
+                        &times;
+                    </button>
+                    <button className="col-span-1 bg-slate-100 p-2 border" name="4" onClick={handleClick}>
+                        4
+                    </button>
+                    <button className="col-span-1 bg-slate-100 p-2 border" name="5" onClick={handleClick}>
+                        5
+                    </button>
+                    <button className="col-span-1 bg-slate-100 p-2 border" name="6" onClick={handleClick}>
+                        6
+                    </button>
+                    <button
+                        className="col-span-1 bg-orange-500 p-2 border"
+                        name="-"
+                        onClick={handleClick}
+                    >
+                        &ndash;
+                    </button>
+                    <button className="col-span-1 bg-slate-100 p-2 border" name="1" onClick={handleClick}>
+                        1
+                    </button>
+                    <button className="col-span-1 bg-slate-100 p-2 border" name="2" onClick={handleClick}>
+                        2
+                    </button>
+                    <button className="col-span-1 bg-slate-100 p-2 border" name="3" onClick={handleClick}>
+                        3
+                    </button>
+                    <button
+                        className="col-span-1 bg-orange-500 p-2 border"
+                        name="+"
+                        onClick={handleClick}
+                    >
+                        +
+                    </button>
+                    <button className="col-span-2 bg-slate-100 p-2 border" name="0" onClick={handleClick}>
+                        0
+                    </button>
+                    <button
+                        className="col-span-1 bg-slate-100 p-2 border"
+                        name="."
+                        onClick={handleClick}
+                    >
+                        .
+                    </button>
+                    <button
+                        className="col-span-1 bg-orange-500 p-2 border"
+                        onClick={calculate}
+                        id="result"
+                    >
+                        =
+                    </button>
                 </div>
             </div>
-            <button
-                className=""
-                onClick={() => dispatch({ type: ACTIONS.CLEAR })}
-            >
-                AC
-            </button>
-            {/* <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>
-        DEL
-      </button> */}
-            <OperationButton operation="+/-" dispatch={dispatch} />
-            <OperationButton operation="%" dispatch={dispatch} />
-            <OperationButton operation="÷" dispatch={dispatch} />
-            <DigitButton digit="7" dispatch={dispatch} />
-            <DigitButton digit="8" dispatch={dispatch} />
-            <DigitButton digit="9" dispatch={dispatch} />
-            <OperationButton operation="x" dispatch={dispatch} />
-            <DigitButton digit="4" dispatch={dispatch} />
-            <DigitButton digit="5" dispatch={dispatch} />
-            <DigitButton digit="6" dispatch={dispatch} />
-            <OperationButton operation="-" dispatch={dispatch} />
-            <DigitButton digit="1" dispatch={dispatch} />
-            <DigitButton digit="2" dispatch={dispatch} />
-            <DigitButton digit="3" dispatch={dispatch} />
-            <OperationButton operation="+" dispatch={dispatch} />
-            <DigitButton className="span-two" digit="0" dispatch={dispatch} />
-            <DigitButton digit="." dispatch={dispatch} />
-            <button
-                className="span-two"
-                onClick={() => dispatch({ type: ACTIONS.EVALUATE })}
-            >
-                =
-            </button>
-        </div>
+        </>
     );
-}
+};
 
 export default App;
