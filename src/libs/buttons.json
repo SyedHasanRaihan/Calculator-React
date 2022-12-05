@@ -1,0 +1,116 @@
+[
+    {
+        "id": 1,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "AC",
+        "function": "clear"
+    },
+    {
+        "id": 2,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "+/-",
+        "function": "toggleSign"
+    },
+    {
+        "id": 3,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "%",
+        "function": "percentage"
+    },
+    {
+        "id": 4,
+        "class": "col-span-1 bg-orange-500 p-2 border",
+        "name": "/",
+        "function": "handleClick"
+    },
+    {
+        "id": 5,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "7",
+        "function": "handleClick"
+    },
+    {
+        "id": 6,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "8",
+        "function": "handleClick"
+    },
+    {
+        "id": 7,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "9",
+        "function": "handleClick"
+    },
+    {
+        "id": 8,
+        "class": "col-span-1 bg-orange-500 p-2 border",
+        "name": "*",
+        "function": "handleClick"
+    },
+    {
+        "id": 9,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "4",
+        "function": "handleClick"
+    },
+    {
+        "id": 10,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "5",
+        "function": "handleClick"
+    },
+    {
+        "id": 11,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "6",
+        "function": "handleClick"
+    },
+    {
+        "id": 12,
+        "class": "col-span-1 bg-orange-500 p-2 border",
+        "name": "-",
+        "function": "handleClick"
+    },
+    {
+        "id": 13,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "1",
+        "function": "handleClick"
+    },
+    {
+        "id": 14,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "2",
+        "function": "handleClick"
+    },
+    {
+        "id": 15,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "3",
+        "function": "handleClick"
+    },
+    {
+        "id": 12,
+        "class": "col-span-1 bg-orange-500 p-2 border",
+        "name": "+",
+        "function": "handleClick"
+    },
+    {
+        "id": 13,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": "0",
+        "function": "handleClick"
+    },
+    {
+        "id": 14,
+        "class": "col-span-1 bg-slate-100 p-2 border",
+        "name": ".",
+        "function": "handleClick"
+    },
+    {
+        "id": 15,
+        "class": "col-span-1 bg-orange-500 p-2 border",
+        "name": "=",
+        "function": "calculate"
+    }
+]
