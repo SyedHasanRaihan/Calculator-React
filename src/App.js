@@ -15,10 +15,12 @@ const App = () => {
     };
 
     const toggleSign = () => {
-        setResult(result * -1);
+        setResult((eval(result * -1).toString()));
+        console.log(result);
     };
     const percentage = () => {
-        setResult(result / 100);
+        setResult(eval(result / 100).toString());
+        console.log(result);
     };
 
     const calculate = () => {
@@ -43,11 +45,22 @@ const App = () => {
                     <div className=" grid grid-cols-4 w-full md:w-[600px] lg:w-[800px]">
                         {buttons.map((item) => (
                             <button
-                                className={`${item.name==="0" ? "col-span-2" : "col-span-1"} ${item.name==="+" || item.name==="-" || item.name==="*" || item.name==="/" ? "bg-orange-600" : "bg-slate-100"} p-2 border`}
+                                className={`${
+                                    item.name === "0"
+                                        ? "col-span-2"
+                                        : "col-span-1"
+                                } ${
+                                    item.name === "+" ||
+                                    item.name === "-" ||
+                                    item.name === "*" ||
+                                    item.name === "/"
+                                        ? "bg-orange-600"
+                                        : "bg-slate-100"
+                                } p-2 border`}
                                 onClick={() =>
                                     item.function === "clear"
                                         ? clear()
-                                        : item.function === "toogleSign"
+                                        : item.function === "toggleSign"
                                         ? toggleSign()
                                         : item.function === "handleClick"
                                         ? handleClick(item.name)
