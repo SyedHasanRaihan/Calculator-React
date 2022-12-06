@@ -5,8 +5,8 @@ import buttons from "./libs/buttons.json";
 const App = () => {
     const [result, setResult] = useState("");
 
-    const handleClick = (val) => {
-        setResult(result.concat(val));
+    const handleClick = (e) => {
+        setResult(result.concat(e.target.name));
         console.log("clicked");
     };
 
@@ -15,7 +15,7 @@ const App = () => {
     };
 
     const toggleSign = () => {
-        setResult((eval(result * -1).toString()));
+        setResult(eval(eval(result) * -1).toString());
         console.log(result);
     };
     const percentage = () => {
@@ -25,11 +25,19 @@ const App = () => {
 
     const calculate = () => {
         try {
-            setResult(eval(result).toString());
+            setResult(eval(result).toFixed(2).toString());
         } catch (error) {
             setResult("ERROR");
             clear();
         }
+    };
+
+    const funMap = {
+        clear: clear,
+        toggleSign: toggleSign,
+        handleClick: (e) => handleClick(e),
+        percentage: percentage,
+        calculate: calculate,
     };
 
     return (
@@ -45,6 +53,7 @@ const App = () => {
                     <div className=" grid grid-cols-4 w-full md:w-[600px] lg:w-[800px]">
                         {buttons.map((item) => (
                             <button
+                                name={item.name}
                                 className={`${
                                     item.name === "0"
                                         ? "col-span-2"
@@ -57,19 +66,7 @@ const App = () => {
                                         ? "bg-orange-600"
                                         : "bg-slate-100"
                                 } p-2 border`}
-                                onClick={() =>
-                                    item.function === "clear"
-                                        ? clear()
-                                        : item.function === "toggleSign"
-                                        ? toggleSign()
-                                        : item.function === "handleClick"
-                                        ? handleClick(item.name)
-                                        : item.function === "percentage"
-                                        ? percentage()
-                                        : item.function === "calculate"
-                                        ? calculate()
-                                        : null
-                                }
+                                onClick={funMap[item.function]}
                                 id={item.id}
                             >
                                 {item.name}
